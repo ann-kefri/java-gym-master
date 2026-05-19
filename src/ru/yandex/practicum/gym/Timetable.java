@@ -4,19 +4,19 @@ import java.util.*;
 
 public class Timetable {
 
-    private final HashMap<DayOfWeek,TreeMap<TimeOfDay, List<TrainingSession>>> timetable = new HashMap<>();
+    private final HashMap<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> timetable = new HashMap<>();
 
     public void addNewTrainingSession(TrainingSession trainingSession) {
         DayOfWeek dayOfWeek = trainingSession.getDayOfWeek();
-        TimeOfDay timeOfDay =  trainingSession.getTimeOfDay();
+        TimeOfDay timeOfDay = trainingSession.getTimeOfDay();
 
-        if(!timetable.containsKey(dayOfWeek)){
-            timetable.put(dayOfWeek,new TreeMap<>());
+        if (!timetable.containsKey(dayOfWeek)) {
+            timetable.put(dayOfWeek, new TreeMap<>());
         }
 
         TreeMap<TimeOfDay, List<TrainingSession>> daySessions = timetable.get(dayOfWeek);
 
-        if(!daySessions.containsKey(timeOfDay)){
+        if (!daySessions.containsKey(timeOfDay)) {
             daySessions.put(timeOfDay, new ArrayList<>());
         }
 
@@ -28,14 +28,14 @@ public class Timetable {
     public List<TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
         TreeMap<TimeOfDay, List<TrainingSession>> sessionsForDay = timetable.get(dayOfWeek);
 
-        if (sessionsForDay == null || sessionsForDay.isEmpty()){
+        if (sessionsForDay == null || sessionsForDay.isEmpty()) {
             return new ArrayList<>();
         }
 
         List<TrainingSession> allSessions = new ArrayList<>();
 
         NavigableSet<TimeOfDay> sortedTimes = sessionsForDay.navigableKeySet();
-        for (TimeOfDay time : sortedTimes){
+        for (TimeOfDay time : sortedTimes) {
             List<TrainingSession> sessions = sessionsForDay.get(time);
             allSessions.addAll(sessions);
         }
@@ -59,11 +59,11 @@ public class Timetable {
         return new ArrayList<>(sessions);
     }
 
-    public List<CounterOfTrainings> getCountByCoaches () {
+    public List<CounterOfTrainings> getCountByCoaches() {
         HashMap<Coach, Integer> countByCoaches = getCoachIntegerHashMap();
 
         List<CounterOfTrainings> result = new ArrayList<>();
-        for (Map.Entry<Coach, Integer> entry : countByCoaches.entrySet()){
+        for (Map.Entry<Coach, Integer> entry : countByCoaches.entrySet()) {
             result.add(new CounterOfTrainings(entry.getKey(), entry.getValue()));
         }
 
@@ -79,13 +79,13 @@ public class Timetable {
 
     private HashMap<Coach, Integer> getCoachIntegerHashMap() {
         HashMap<Coach, Integer> countByCoaches = new HashMap<>();
-        for (Map.Entry<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> dayEntry : timetable.entrySet()){
+        for (Map.Entry<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> dayEntry : timetable.entrySet()) {
             TreeMap<TimeOfDay, List<TrainingSession>> sessionsByTime = dayEntry.getValue();
-            for (Map.Entry<TimeOfDay, List<TrainingSession>> timeEntry : sessionsByTime.entrySet()){
+            for (Map.Entry<TimeOfDay, List<TrainingSession>> timeEntry : sessionsByTime.entrySet()) {
                 List<TrainingSession> sessions = timeEntry.getValue();
-                for (TrainingSession session : sessions){
+                for (TrainingSession session : sessions) {
                     Coach coach = session.getCoach();
-                    countByCoaches.put(coach, countByCoaches.getOrDefault(coach, 0) + 1 );
+                    countByCoaches.put(coach, countByCoaches.getOrDefault(coach, 0) + 1);
                 }
             }
         }
