@@ -110,7 +110,7 @@ public class TimetableTest {
 
         List<CounterOfTrainings> result = timetable.getCountByCoaches();
         assertEquals(1, result.size());
-        CounterOfTrainings counter = result.getFirst();
+        CounterOfTrainings counter = result.get(0);
         assertEquals(1, counter.getTrainingCount());
         assertEquals(coach, counter.getCoach());
     }
@@ -138,7 +138,7 @@ public class TimetableTest {
 
         assertEquals(3, result.size());
 
-        CounterOfTrainings counter1 = result.getFirst();
+        CounterOfTrainings counter1 = result.get(0);
         assertEquals(3, counter1.getTrainingCount());
         assertEquals(coach1, counter1.getCoach());
 

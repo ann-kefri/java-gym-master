@@ -60,24 +60,19 @@ public class Timetable {
     }
 
     public List<CounterOfTrainings> getCountByCoaches() {
-        HashMap<Coach, Integer> countByCoaches = getCoachIntegerHashMap();
+        HashMap<Coach, Integer> countByCoaches = getTrainingCountsByCoach();
 
         List<CounterOfTrainings> result = new ArrayList<>();
         for (Map.Entry<Coach, Integer> entry : countByCoaches.entrySet()) {
             result.add(new CounterOfTrainings(entry.getKey(), entry.getValue()));
         }
 
-        result.sort(new Comparator<CounterOfTrainings>() {
-            @Override
-            public int compare(CounterOfTrainings o1, CounterOfTrainings o2) {
-                return Integer.compare(o2.getTrainingCount(), o1.getTrainingCount());
-            }
-        });
+        result.sort(Comparator.comparingInt(CounterOfTrainings::getTrainingCount).reversed());
 
         return result;
     }
 
-    private HashMap<Coach, Integer> getCoachIntegerHashMap() {
+    private HashMap<Coach, Integer> getTrainingCountsByCoach() {
         HashMap<Coach, Integer> countByCoaches = new HashMap<>();
         for (Map.Entry<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> dayEntry : timetable.entrySet()) {
             TreeMap<TimeOfDay, List<TrainingSession>> sessionsByTime = dayEntry.getValue();
